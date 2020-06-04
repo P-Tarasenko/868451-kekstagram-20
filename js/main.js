@@ -15,6 +15,10 @@ var minLikes = 15;
 var maxLikes = 200;
 var photoTemplate = document.querySelector('#picture');
 var picturesContainer = document.querySelector('.pictures');
+var bigPicture = document.querySelector('.big-picture');
+var commentsList = bigPicture.querySelector('.social__comments');
+var commentsCount = bigPicture.querySelector('.social__comment-count');
+var commentLoader = bigPicture.querySelector('.comments-loader');
 
 var getRandom = function (min, max) {
   var rand = min + Math.random() * (max + 1 - min);
@@ -76,5 +80,51 @@ var appendAllPhoto = function () {
   picturesContainer.appendChild(fragment);
 };
 
+var clearCommentsList = function () {
+  Array.from(commentsList.children).forEach(function (elem) {
+    elem.remove();
+  });
+};
+
+var createCommentElements = function () {
+  var commentElement = bigPicture.querySelector('.social__comment');
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < photosData[0].comments.length; i++) {
+    var newCommentElement = commentElement.cloneNode(true);
+    var newCommentElementImg = newCommentElement.querySelector('.social__picture');
+    var newCommentElementMessage = newCommentElement.querySelector('.social__text');
+
+    newCommentElementImg.setAttribute('src', photosData[0].comments[i].avatar);
+    newCommentElementImg.setAttribute('alt', photosData[0].comments[i].name);
+    newCommentElementMessage.textContent = photosData[0].comments[i].message;
+    fragment.appendChild(newCommentElement);
+  }
+
+  return fragment;
+};
+
+var changeBigPicture = function () {
+  var fragment = createCommentElements();
+  var img = bigPicture.querySelector('.big-picture__img').children[0];
+  var likes = bigPicture.querySelector('.likes-count');
+  var comments = bigPicture.querySelector('.comments-count');
+  var desc = bigPicture.querySelector('.social__caption');
+
+  img.setAttribute('src', photosData[0].url);
+  likes.textContent = photosData[0].likes;
+  comments.textContent = photosData[0].comments.length;
+  desc.textContent = photosData[0].description;
+
+  clearCommentsList();
+  commentsList.appendChild(fragment);
+};
+
 createData();
 appendAllPhoto();
+document.querySelector('body').classList.add('modal-open');
+bigPicture.classList.remove('hidden');
+changeBigPicture();
+commentsCount.classList.add('hidden');
+commentLoader.classList.add('hidden');
+

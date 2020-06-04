@@ -8,11 +8,11 @@ var MESSAGES = ['Всё отлично!',
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
-var countOfPhoto = 25;
+var COUNT_OF_PHOTO = 25;
+var MAX_AVATARS = 6;
 var photosData = [];
 var minLikes = 15;
 var maxLikes = 200;
-var maxAvatars = 6;
 var photoTemplate = document.querySelector('#picture');
 var picturesContainer = document.querySelector('.pictures');
 
@@ -24,7 +24,7 @@ var getRandom = function (min, max) {
 
 var createComment = function () {
   var comment = {
-    avatar: 'img/avatar-' + getRandom(1, maxAvatars) + '.svg',
+    avatar: 'img/avatar-' + getRandom(1, MAX_AVATARS) + '.svg',
     message: MESSAGES[getRandom(0, 5)],
     name: NAMES[getRandom(0, 5)]
   };
@@ -48,7 +48,7 @@ var createPhoto = function (url) {
 };
 
 var createData = function () {
-  for (var i = 0; i < countOfPhoto; i++) {
+  for (var i = 0; i < COUNT_OF_PHOTO; i++) {
     photosData[i] = createPhoto('photos/' + (i + 1) + '.jpg');
   }
 };
